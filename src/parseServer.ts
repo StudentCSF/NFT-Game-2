@@ -3,7 +3,7 @@ import { ParseServer } from 'parse-server';
 import config from './config';
 import MoralisAuthAdapter from './auth/MoralisAuthAdapter';
 
-export const parseServer = new ParseServer({
+export const parseServer = ParseServer({
   databaseURI: config.DATABASE_URI,
   cloud: config.CLOUD_PATH,
   appId: config.APPLICATION_ID,

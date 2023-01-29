@@ -2,7 +2,7 @@
 import ParseDashboard from 'parse-dashboard';
 import config from './config';
 
-export const parseDashboard = new ParseDashboard(
+export const parseDashboard = ParseDashboard(
   {
     apps: [
       {

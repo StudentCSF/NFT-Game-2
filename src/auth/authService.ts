@@ -17,7 +17,7 @@ export interface RequestMessage {
 const DOMAIN = 'defi.finance';
 const STATEMENT = 'Please sign this message to confirm your identity.';
 const URI = 'https://defi.finance';
-const EXPIRATION_TIME = '2024-01-01T00:00:00.000Z';
+const EXPIRATION_SESSION_HOURS_TIME = 24;
 const TIMEOUT = 15;
 
 export async function requestMessage({
@@ -47,6 +47,8 @@ async function requestMessageEvm({
   chain: string;
   networkType: 'evm';
 }) {
+  let date = new Date();
+  date.setHours(date.getHours() + EXPIRATION_SESSION_HOURS_TIME);
   const result = await Moralis.Auth.requestMessage({
     address,
     chain,
@@ -54,7 +56,7 @@ async function requestMessageEvm({
     domain: DOMAIN,
     statement: STATEMENT,
     uri: URI,
-    expirationTime: EXPIRATION_TIME,
+    expirationTime: date.toISOString(),
     timeout: TIMEOUT,
   });
 
@@ -65,6 +67,9 @@ async function requestMessageEvm({
 }
 
 async function requestMessageSol({ address, networkType }: { address: string; networkType: 'solana' }) {
+  let date = new Date();
+  date.setHours(date.getHours() + EXPIRATION_SESSION_HOURS_TIME);
+  console.log(date.toISOString());
   const result = await Moralis.Auth.requestMessage({
     address,
     networkType,
@@ -72,7 +77,7 @@ async function requestMessageSol({ address, networkType }: { address: string; ne
     domain: DOMAIN,
     statement: STATEMENT,
     uri: URI,
-    expirationTime: EXPIRATION_TIME,
+    expirationTime: date.toISOString(),
     timeout: TIMEOUT,
   });
 
