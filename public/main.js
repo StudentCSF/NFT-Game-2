@@ -1,3 +1,5 @@
+import { startGame } from "./game.js";
+
 /* global axios ethers */
 
 const AUTH_API_URL = 'http://127.0.0.1:1337/api/auth';
@@ -5,6 +7,7 @@ const AUTH_API_URL = 'http://127.0.0.1:1337/api/auth';
 const elError = document.getElementById('error');
 const elUser = document.getElementById('user');
 const elBtnMetamask = document.getElementById('auth-metamask');
+const elGame = document.getElementById('game');
 
 const handleApiPost = async (endpoint, params) => {
   const result = await axios.post(`${AUTH_API_URL}/${endpoint}`, params, {
@@ -59,8 +62,13 @@ const handleAuth = async () => {
 
   const { user } = await verifyMessage(message, signature, 'evm');
 
-  renderUser(user);
+  //renderUser(user);
+  renderGame(user);
 };
+
+const renderGame = (user) => {
+   user ? startGame(user) : startGame(null);
+}
 
 const renderUser = (user) => {
   elUser.innerHTML = user ? JSON.stringify(user, null, 2) : '';
