@@ -9,6 +9,8 @@ export default cleanEnv(process.env, {
   MORALIS_API_KEY: str(),
 
   DATABASE_URI: str(),
+  DATABASE_NAME: str(),
+  // DATABASE_COLLECTION: str(),
 
   CLOUD_PATH: str(),
   APP_NAME: str(),

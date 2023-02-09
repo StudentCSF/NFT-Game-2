@@ -32,9 +32,9 @@ export async function requestMessage({
   if (networkType === 'evm' && chain) {
     return requestMessageEvm({ address, chain, networkType });
   }
-  if (networkType === 'solana') {
-    return requestMessageSol({ address, networkType });
-  }
+  // if (networkType === 'solana') {
+  //   return requestMessageSol({ address, networkType });
+  // }
   throw new Error(`Invalid network: ${networkType}`);
 }
 
@@ -49,6 +49,7 @@ async function requestMessageEvm({
 }) {
   let date = new Date();
   date.setHours(date.getHours() + EXPIRATION_SESSION_HOURS_TIME);
+  // console.log(date.toISOString());
   const result = await Moralis.Auth.requestMessage({
     address,
     chain,
@@ -66,26 +67,25 @@ async function requestMessageEvm({
   return message;
 }
 
-async function requestMessageSol({ address, networkType }: { address: string; networkType: 'solana' }) {
-  let date = new Date();
-  date.setHours(date.getHours() + EXPIRATION_SESSION_HOURS_TIME);
-  console.log(date.toISOString());
-  const result = await Moralis.Auth.requestMessage({
-    address,
-    networkType,
-    solNetwork: 'devnet',
-    domain: DOMAIN,
-    statement: STATEMENT,
-    uri: URI,
-    expirationTime: date.toISOString(),
-    timeout: TIMEOUT,
-  });
+// async function requestMessageSol({ address, networkType }: { address: string; networkType: 'solana' }) {
+//   let date = new Date();
+//   date.setHours(date.getHours() + EXPIRATION_SESSION_HOURS_TIME);
+//   const result = await Moralis.Auth.requestMessage({
+//     address,
+//     networkType,
+//     solNetwork: 'devnet',
+//     domain: DOMAIN,
+//     statement: STATEMENT,
+//     uri: URI,
+//     expirationTime: date.toISOString(),
+//     timeout: TIMEOUT,
+//   });
 
-  const { message, id, profileId } = result.toJSON();
-  authRequests.set(message, { id, profileId });
+//   const { message, id, profileId } = result.toJSON();
+//   authRequests.set(message, { id, profileId });
 
-  return message;
-}
+//   return message;
+// }
 
 export interface VerifyMessage {
   network: string;

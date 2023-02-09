@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NFT Game 2</title>
+  <title>Dino NFT Game 2</title>
   <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" href="./images/favicon.png">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
   <script src="https://cdn.jsdelivr.net/npm/base-58@0.0.1/Base58.js"></script>
@@ -15,11 +16,16 @@
 
 <body>
   <header>
-    <h1>NFT Game 2</h1>
+    <h1>Dino NFT Game 2</h1>
   </header>
   <main>
     <div id="error"></div>
-    <button class="btn" id="auth-metamask">Authenticate via Metamask</button>
+    <div>
+      <button class="btn" id="auth-metamask">Authenticate via Metamask</button>
+      <button class="btn" id="anonym">Try the game as anonym</button>
+    </div>
+    <p id="auth-as"></p>
+    <!-- <br><button class="btn-test" id="test">Test Ipfs</button> -->
     <div id="user"></div>
   </main>
 
@@ -27,7 +33,7 @@
       var exports = {};
     </script>-->
   <script type='module' src="main.js"></script>
-  <div id="game" style="text-align: center; margin: 20px">
+  <div id="game">
   </div>
 </body>
 
