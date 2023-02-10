@@ -1,7 +1,9 @@
 import * as dotenv from 'dotenv';
+import * as dotenvExpand from 'dotenv-expand'
 import { cleanEnv, num, str, bool } from 'envalid';
 
-dotenv.config();
+const env = dotenv.config();
+dotenvExpand.expand(env)
 
 export default cleanEnv(process.env, {
   PORT: num(),
@@ -18,6 +20,8 @@ export default cleanEnv(process.env, {
   SERVER_ENDPOINT: str(),
   MASTER_KEY: str(),
   APPLICATION_ID: str(),
+  BASE_URI: str(),
+  BASE_SERVER_URL: str(),
   SERVER_URL: str(),
 
   ALLOW_INSECURE_HTTP: bool({ default: false }),
