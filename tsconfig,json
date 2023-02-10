@@ -10,7 +10,9 @@
     "rootDir": "src",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "pretty": true
+    "pretty": true,
+    "allowJs": true,
+    "checkJs": true
   },
   "include": ["src"]
 }
