@@ -1,15 +1,15 @@
 import { startGame } from "./game.js";
 
 /* global axios ethers */
-var baseUri;
-if (window.location.host == '127.0.0.1:5500') {
-  const baseUri = 'http://127.0.0.1:1337/api/';
-} else {
-  const baseUri = 'https://nft-game-2.vercel.app/api/';
-}
+// var baseUri;
+// if (window.location.host == '127.0.0.1:5500') {
+//   const baseUri = 'http://127.0.0.1:1337/api/';
+// } else {
+//   const baseUri = 'https://nft-game-2.vercel.app/api/';
+// }
 
-const AUTH_API_URL = `${baseUri}auth`;
-const GAME_API_URL = `${baseUri}auth`;
+const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
+const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
 
 export var SIGNER;
 
