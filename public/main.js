@@ -35,8 +35,8 @@ export const handleApiPost = async (endpoint, params) => {
   return result.data;
 };
 
-let response = await axios.get('https://ipfs.moralis.io:2053/ipfs/QmRVLthFLhsBeZUvfAhYSGGZ7wMP4dwPCjFYbFQgJ2dtvm/moralis/logo.json');
-let data = response.data;
+// let response = await axios.get('https://ipfs.moralis.io:2053/ipfs/QmRVLthFLhsBeZUvfAhYSGGZ7wMP4dwPCjFYbFQgJ2dtvm/moralis/logo.json');
+// let data = response.data;
 
 export const handleGameApiPost = async (endpoint, params) => {
   const result = await axios.post(`${GAME_API_URL}/${endpoint}`, params, {
