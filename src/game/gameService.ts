@@ -1,8 +1,6 @@
 import Moralis from 'moralis';
-import fetch from "node-fetch"
-// import Web3 from 'web3';
-// import { AbiItem } from 'web3-utils'
 import { findOneByRarity as findOneByRarity, setHighScore, getHighScore } from "./gameRepository"
+import fetch from 'node-fetch';
 
 // declare const Parse: any;
 
@@ -34,7 +32,7 @@ const RARITY_SCORE_MAP: Map<string, number> = new Map([
 
 async function getDataFromUrl(url: string) {
     let response = await fetch(url);
-    let data = await response.json();
+    let data = response.json();
     return data;
 }
 
@@ -65,13 +63,17 @@ export async function findPlayerUrl(address: string) {
         //     return null;
         // }
         // if (!tad) {
-            let uri = nfts.result[i].tokenUri;
-            console.log(uri);
-            if (uri) {
-                tad = await getDataFromUrl(uri);
-                console.log();
-                // tad = tad.replaceAll("\\", "");
-            }
+        let uri = nfts.result[i].tokenUri;
+        console.log(uri);
+        if (uri) {
+            tad = await getDataFromUrl(uri);
+            // // let response = await fetch(uri);
+            // let response = await fetch('ipfs://bafybeictlsohfvunxm54y62ba3ru5j4btksgwmtww64f64qdjchuhdpuwu/dino-nft-game-2.json');
+            // console.log(response);
+            // tad = await response.json();
+            console.log(`tad:  ${tad}\n`);
+            // tad = tad.replaceAll("\\", "");
+        }
         // }
         if (!tad || !tad.rarity) {
             continue;
@@ -96,8 +98,9 @@ export async function findPlayerUrl(address: string) {
         }
         playerUrl = imU;
     }
-
+    console.log(123);
     let highScore = await getHighScore(address);
+    console.log(31);
     if (highScore < 0) {
         await setHighScore(address, 0);
         highScore = 0;

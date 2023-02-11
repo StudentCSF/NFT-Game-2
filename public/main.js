@@ -8,8 +8,11 @@ import { startGame } from "./game.js";
 //   const baseUri = 'https://nft-game-2.vercel.app/api/';
 // }
 
-const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
-const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
+const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
+const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
+
+// const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
+// const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
 
 export var SIGNER;
 
@@ -25,12 +28,15 @@ const elGame = document.getElementById('game');
 export const handleApiPost = async (endpoint, params) => {
   const result = await axios.post(`${AUTH_API_URL}/${endpoint}`, params, {
     headers: {
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     },
   });
 
   return result.data;
 };
+
+let response = await axios.get('https://ipfs.moralis.io:2053/ipfs/QmRVLthFLhsBeZUvfAhYSGGZ7wMP4dwPCjFYbFQgJ2dtvm/moralis/logo.json');
+let data = response.data;
 
 export const handleGameApiPost = async (endpoint, params) => {
   const result = await axios.post(`${GAME_API_URL}/${endpoint}`, params, {
