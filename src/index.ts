@@ -15,6 +15,7 @@ Moralis.start({
 
 var corsOptions = {
   origin: config.CLIENT_URL,
+  credentials: true,
   optionsSuccessStatus: 200
 };
 
