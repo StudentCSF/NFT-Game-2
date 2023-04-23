@@ -23,6 +23,7 @@ export default cleanEnv(process.env, {
   BASE_URI: str(),
   BASE_SERVER_URL: str(),
   SERVER_URL: str(),
+  CLIENT_URL: str(),
 
   ALLOW_INSECURE_HTTP: bool({ default: false }),
 });
