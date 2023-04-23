@@ -30,6 +30,11 @@ app.use('/dashboard', parseDashboard);
 app.use('/api', apiRouter);
 app.use(errorHandler);
 
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
+
 app.use(express.static('public'));
 
 app.listen(config.PORT, () => {
