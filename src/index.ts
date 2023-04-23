@@ -20,11 +20,11 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 app.options('*', cors())
-app.all('/*', function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  next();
-});
+// app.all('/*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*");
+//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//   next();
+// });
 
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
@@ -32,7 +32,7 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
 app.use('/dashboard', parseDashboard);
-app.use('/api', apiRouter);
+app.use('/api', cors(corsOptions), apiRouter);
 app.use(errorHandler);
 
 app.use(express.static('public'));
