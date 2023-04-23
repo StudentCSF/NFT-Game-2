@@ -20,11 +20,25 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.options("/*", function(req, res, next){
-  res.header('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-  res.send(200);
+// app.options("/*", function(req, res, next){
+//   res.header('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
+//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+//   res.send(200);
+// });
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method == "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+
+  next();
 });
 
 // module.exports = (req, res) => {
@@ -67,4 +81,4 @@ app.listen(config.PORT, () => {
   console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
 });
 
-module.exports = app;
+// module.exports = app;
