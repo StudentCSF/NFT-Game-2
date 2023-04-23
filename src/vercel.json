@@ -1,3 +1,12 @@
 {
-  
+  "headers": [
+    {
+      "headers": [
+        {
+          "key": "access-control-allow-origin",
+          "value": "https://nft-game-2-client.vercel.app"
+        }
+      ]
+    }
+  ]
 }
