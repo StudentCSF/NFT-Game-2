@@ -8,11 +8,11 @@ import { startGame } from "./game.js";
 //   const baseUri = 'https://nft-game-2.vercel.app/api/';
 // }
 
-const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
-const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
+// const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
+// const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
 
-// const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
-// const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
+const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
+const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
 
 export var SIGNER;
 
