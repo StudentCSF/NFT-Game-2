@@ -20,45 +20,45 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// app.options("/*", function(req, res, next){
-//   res.header('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-//   res.send(200);
-// });
+app.options("/*", function(req, res, next){
+  res.header('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+  res.send(200);
+});
 
-// app.use((req, res, next) => {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-//   );
-//   if (req.method == "OPTIONS") {
-//     res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-//     return res.status(200).json({});
-//   }
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  if (req.method == "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
 
-//   next();
-// });
+  next();
+});
 
 
 
-// module.exports = (req, res) => {
-//   //set header first to allow request or origin domain (value can be different)
-//   res.setHeader('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
-//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
+module.exports = (req, res) => {
+  //set header first to allow request or origin domain (value can be different)
+  res.setHeader('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
 
-// //---- other code
+//---- other code
 
-// //Preflight CORS handler
-//   if(req.method === 'OPTIONS') {
-//       return res.status(200).json(({
-//           body: "OK"
-//       }))
-//   }
+//Preflight CORS handler
+  if(req.method === 'OPTIONS') {
+      return res.status(200).json(({
+          body: "OK"
+      }))
+  }
 
-// }
+}
 
 // app.options('*', cors())
 // app.use('/*', function(req, res, next) {
