@@ -6,7 +6,7 @@ import { parseServer } from './parseServer';
 import { errorHandler } from './middlewares/errorHandler';
 import config from './config';
 import { apiRouter } from './apiRouter';
-import { allowCors } from './api/options'
+// import { allowCors } from './api/options'
 
 const app = express();
 
@@ -21,7 +21,7 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(allowCors)
+// app.use(allowCors)
 
 app.options("/*", function(req, res, next){
   res.header('Access-Control-Allow-Origin', 'https://nft-game-2-client.vercel.app');
