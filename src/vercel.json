@@ -8,17 +8,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "index.js"
-    }
-  ],
-  "headers": [
-    {
-      "headers": [
-        {
-          "key": "access-control-allow-origin",
-          "value": "https://nft-game-2-client.vercel.app"
-        }
-      ]
+      "dest": "index.ts"
     }
   ]
 }
