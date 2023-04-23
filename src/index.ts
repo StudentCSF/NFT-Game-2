@@ -14,7 +14,8 @@ Moralis.start({
 });
 
 var corsOptions = {
-  origin: config.CLIENT_URL
+  origin: config.CLIENT_URL,
+  credentials: true
 };
 
 app.use(cors(corsOptions));
