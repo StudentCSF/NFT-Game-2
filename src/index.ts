@@ -14,14 +14,13 @@ Moralis.start({
 });
 
 var corsOptions = {
-  origin: config.CLIENT_URL,
-  preflightContinue: true
+  origin: config.CLIENT_URL
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors())
-// app.all('/*', function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
+// app.options('*', cors())
+// app.use('/*', function(req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "*123");
 //   res.header("Access-Control-Allow-Headers", "X-Requested-With");
 //   next();
 // });
