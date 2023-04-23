@@ -14,15 +14,8 @@ Moralis.start({
 });
 
 var corsOptions = {
-  origin: config.CLIENT_URL,
-  credentials: true,
-  optionsSuccessStatus: 200
+  origin: config.CLIENT_URL
 };
-
-app.all('/', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  next();
-});
 
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
