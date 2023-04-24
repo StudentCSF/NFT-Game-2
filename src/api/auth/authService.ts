@@ -1,6 +1,6 @@
 import Moralis from 'moralis';
-import { authRequests } from '../store';
-import { ParseServerRequest } from '../utils/ParseServerRequest';
+import { authRequests } from '../../store';
+import { ParseServerRequest } from '../../utils/ParseServerRequest';
 
 const serverRequest = new ParseServerRequest();
 
