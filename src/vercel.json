@@ -11,7 +11,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Credentials",
-          "value": "true"
+          "value": "false"
         },
         {
           "key": "Access-Control-Allow-Origin",
@@ -19,7 +19,7 @@
         },
         {
           "key": "access-control-allow-methods",
-          "value": "OPTIONS"
+          "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
         },
         {
           "key": "Access-Control-Allow-Headers",
