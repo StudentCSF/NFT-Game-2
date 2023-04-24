@@ -60,5 +60,5 @@ const handler = (req, res) => {
   const d = new Date()
   res.end(d.toString())
 }
-
-module.exports = allowCors(handler)
+app.use(allowCors(handler))
+// module.exports = allowCors(handler)
