@@ -19,7 +19,7 @@
         },
         {
           "key": "access-control-allow-methods",
-          "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
+          "value": "OPTIONS"
         },
         {
           "key": "Access-Control-Allow-Headers",
