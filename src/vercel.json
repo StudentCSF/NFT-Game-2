@@ -10,7 +10,7 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "Access-Control-Allow-Methods",
+          "key": "access-control-allow-methods",
           "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT"
         },
         {
