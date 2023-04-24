@@ -23,6 +23,6 @@
     }
   ],
   "rewrites": [
-      { "source": "/(.*)", "destination": "./api/apiRouter.ts" }
+      { "source": "/(.*)", "destination": "/" }
   ]
 }

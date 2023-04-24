@@ -5,7 +5,7 @@ import { parseDashboard } from './parseDashboard';
 import { parseServer } from './parseServer';
 import { errorHandler } from './middlewares/errorHandler';
 import config from './config';
-import { apiRouter } from './api/apiRouter';
+import { apiRouter } from './apiRouter';
 // import { allowCors } from './api/options'
 
 const app = express();
