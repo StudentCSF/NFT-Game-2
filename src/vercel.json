@@ -11,11 +11,11 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Credentials",
-          "value": "false"
+          "value": "true"
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://nft-game-2-client.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
