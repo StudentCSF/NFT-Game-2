@@ -1,7 +1,7 @@
 // @ts-ignore
 import { ParseServer } from 'parse-server';
 import config from './config';
-import MoralisAuthAdapter from './api/auth/MoralisAuthAdapter';
+import MoralisAuthAdapter from './auth/MoralisAuthAdapter';
 
 export const parseServer = ParseServer({
   databaseURI: config.DATABASE_URI,
