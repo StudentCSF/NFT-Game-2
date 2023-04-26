@@ -13,12 +13,12 @@ Moralis.start({
   apiKey: config.MORALIS_API_KEY,
 });
 
-var corsOptions = {
-  origin: config.CLIENT_URL,
-  optionsSuccessStatus: 200,
-  methods: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
-  allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-UserSession'
-};
+// var corsOptions = {
+//   origin: config.CLIENT_URL,
+//   optionsSuccessStatus: 200,
+//   methods: 'GET,OPTIONS,PATCH,DELETE,POST,PUT',
+//   allowedHeaders: 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-UserSession'
+// };
 
 app.options("/*", function(req, res, next){
   res.header('Access-Control-Allow-Origin', '*');
@@ -27,7 +27,7 @@ app.options("/*", function(req, res, next){
   res.send(200);
 });
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
