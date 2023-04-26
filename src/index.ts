@@ -9,9 +9,9 @@ import { apiRouter } from './apiRouter';
 
 const app = express();
 
-Moralis.start({
-  apiKey: config.MORALIS_API_KEY,
-});
+// Moralis.start({
+//   apiKey: config.MORALIS_API_KEY,
+// });
 
 // var corsOptions = {
 //   origin: config.CLIENT_URL,
@@ -37,16 +37,16 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
 app.use(express.json({ limit: '50mb' }));
 
-app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
+// app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
 app.use('/dashboard', parseDashboard);
 app.use('/api', apiRouter);
 app.use(errorHandler);
 
 app.use(express.static('public'));
 
-app.listen(config.PORT, () => {
-  // eslint-disable-next-line no-console
-  console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
-});
+// app.listen(config.PORT, () => {
+//   // eslint-disable-next-line no-console
+//   console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
+// });
 
 module.exports = app;
