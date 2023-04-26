@@ -9,9 +9,9 @@ import { apiRouter } from './apiRouter';
 
 const app = express();
 
-// Moralis.start({
-//   apiKey: config.MORALIS_API_KEY,
-// });
+Moralis.start({
+  apiKey: config.MORALIS_API_KEY,
+});
 
 // var corsOptions = {
 //   origin: config.CLIENT_URL,
