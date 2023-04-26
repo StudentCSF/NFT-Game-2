@@ -54,4 +54,4 @@ app.options("/*", function(req, res, next){
 //   console.log(`is running on port`);
 // });
 
-// module.exports = app;
+module.exports = app;
