@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
 
 // // app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
 // app.use('/dashboard', parseDashboard);
-app.use('/api', apiRouter);
+// app.use('/api', apiRouter);
 // app.use(errorHandler);
 
 // app.use(express.static('public'));
