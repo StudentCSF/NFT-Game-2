@@ -2,8 +2,6 @@ import { requestMessage, verifyMessage } from './authService';
 import { NextFunction, Request, Response } from 'express';
 
 export async function request(req: Request, res: Response, next: NextFunction) {
-  console.log(123);
-  if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
   try {
     const { address, chain, networkType } = req.body;
 
@@ -33,4 +31,9 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
   } catch (err) {
     next(err);
   }
+}
+
+export async function options(req: Request, res: Response, next: NextFunction) {
+  console.log(123);
+  return res.status(200).json(({ body: "OK" }));
 }
