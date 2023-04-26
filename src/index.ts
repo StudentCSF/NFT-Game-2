@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 //   console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
 // });
 
-app.listen(config.PORT, () => {
+app.listen(2443, () => {
   // eslint-disable-next-line no-console
   console.log(`is running on port`);
 });
