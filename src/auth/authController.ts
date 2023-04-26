@@ -32,8 +32,3 @@ export async function verify(req: Request, res: Response, next: NextFunction) {
     next(err);
   }
 }
-
-export async function options(req: Request, res: Response, next: NextFunction) {
-  console.log(123);
-  return res.status(200).json(({ body: "OK" }));
-}
