@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/api",
-      "destination": "/apiRouter.ts"
+      "source": "/(.*)",
+      "destination": "index.ts"
     }
   ],
   "headers": [
