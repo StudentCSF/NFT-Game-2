@@ -6,7 +6,6 @@ import { parseServer } from './parseServer';
 import { errorHandler } from './middlewares/errorHandler';
 import config from './config';
 import { apiRouter } from './apiRouter';
-// import { allowCors } from './api/options'
 
 const app = express();
 
@@ -27,7 +26,7 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
 app.use('/dashboard', parseDashboard);
-app.use('/ap', apiRouter);
+app.use('/api', apiRouter);
 app.use(errorHandler);
 
 app.use(express.static('public'));
