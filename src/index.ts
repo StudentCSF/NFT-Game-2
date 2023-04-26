@@ -24,7 +24,7 @@ app.options("/*", function(req, res, next){
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
   res.header('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-UserSession');
-  res.send(200);
+  res.sendStatus(200);
 });
 
 // app.use(cors(corsOptions));
