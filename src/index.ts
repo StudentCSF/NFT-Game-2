@@ -38,11 +38,11 @@ app.use(express.json());
 app.use(express.json({ limit: '50mb' }));
 
 // // app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
-app.use('/dashboard', parseDashboard);
-app.use('/api', apiRouter);
-app.use(errorHandler);
+// app.use('/dashboard', parseDashboard);
+// app.use('/api', apiRouter);
+// app.use(errorHandler);
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 
 // app.listen(config.PORT, () => {
 //   // eslint-disable-next-line no-console
