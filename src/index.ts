@@ -29,9 +29,9 @@ app.options("/*", function(req, res, next){
 
 // app.use(cors(corsOptions));
 
-// app.get('/', (req, res) => {
-//   res.send('Hey this is my API running 🥳')
-// })
+app.get('/', (req, res) => {
+  res.send('Hey this is my API running 🥳')
+})
 
 // app.use(express.urlencoded({ extended: true }));
 // app.use(express.json());
@@ -49,9 +49,9 @@ app.options("/*", function(req, res, next){
 //   console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
 // });
 
-// app.listen(2443, () => {
-//   // eslint-disable-next-line no-console
-//   console.log(`is running on port`);
-// });
+app.listen(config.PORT, () => {
+  // eslint-disable-next-line no-console
+  console.log(`is running on port`);
+});
 
-module.exports = app;
+// module.exports = app;
