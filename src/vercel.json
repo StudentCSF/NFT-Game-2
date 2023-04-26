@@ -3,7 +3,12 @@
   "builds": [
     {
       "src": "index.ts",
-      "use": "@now/node"
+      "use": "@now/node",
+      "config": {
+        "includeFiles": [
+          "*"
+        ]
+      }
     }
   ]
 }
