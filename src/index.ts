@@ -27,7 +27,7 @@ app.use(express.json({ limit: '50mb' }));
 
 app.use(`/${config.SERVER_ENDPOINT}`, parseServer);
 app.use('/dashboard', parseDashboard);
-app.use('/api', apiRouter);
+app.use('/ap', apiRouter);
 app.use(errorHandler);
 
 app.use(express.static('public'));
