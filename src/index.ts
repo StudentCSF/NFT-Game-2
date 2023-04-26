@@ -49,9 +49,9 @@ app.use(express.static('public'));
 //   console.log(`${config.APP_NAME} is running on port ${config.PORT}`);
 // });
 
-app.listen(2443, () => {
-  // eslint-disable-next-line no-console
-  console.log(`is running on port`);
-});
+// app.listen(2443, () => {
+//   // eslint-disable-next-line no-console
+//   console.log(`is running on port`);
+// });
 
 // module.exports = app;
