@@ -15,26 +15,50 @@
 </head>
 
 <body>
-  <header>
-    <h1>Dino NFT Game 2</h1>
-  </header>
-  <main>
-    <div id="error"></div>
-    <div>
-      <button class="btn" id="auth-metamask">Authenticate via Metamask</button>
-      <button class="btn" id="anonym">Try the game as anonym</button>
-    </div>
-    <p id="auth-as"></p>
-    <!-- <br><button class="btn-test" id="test">Test Ipfs</button> -->
-    <div id="user"></div>
-  </main>
+  <div id="wrapper">
+    <header>
+      <h3>Dino NFT Game 2</h1>
+    </header>
+    <main>
+      <div id="error"></div>
+      <div>
+        <button class="btn" id="auth-metamask">Авторизоваться через MetaMask и играть</button>
+        <button class="btn" id="anonym">Играть без авторизации</button>
+        <!-- <button class="btn" id="anonym">Try the game as anonym</button> -->
+      </div>
+      <p id="auth-as"></p>
+      <!-- <br><button class="btn-test" id="test">Test Ipfs</button> -->
+      <div id="user"></div>
 
-  <!--<script>
+      <div id="about">
+        <p>Добро пожаловать в NFT игру!</p>
+        <p>Управление персонажем с помощью ↑ (прыжок). </p>
+        <p>Задача: пробежать как можно дальше. </p>
+        <p>При игре без авторизации Вы будете играть обычным персонажем и иметь всего одну жизнь на один забег. </p>
+        <p>Если авторизоваться, то будет возможность выиграть путем прохождения определенной дистанции NFT персонажа у которого может быть больше одной жизни. </p>
+        <p>Также будет возможность докупать жизни за криптовалюту. </p>
+        <p>Удачи и приятной игры!</p>
+        <br>
+        <p>С уважением,</p>
+        <p>Разработчик</p>
+      </div>
+
+      <div id="game">
+      </div>
+
+    </main>
+
+    <!--<script>
       var exports = {};
     </script>-->
-  <script type='module' src="main.js"></script>
-  <div id="game">
+
+    <footer id="footer">
+      <address>Email: valeev_v_i@sc.vsu.ru</address>
+      <p>©Copyright Виктор Валеев</p>
+    </footer>
   </div>
+
+  <script type='module' src="main.js"></script>
 </body>
 
 </html>

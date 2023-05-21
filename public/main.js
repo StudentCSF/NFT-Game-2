@@ -8,11 +8,11 @@ import { startGame } from "./game.js";
 //   const baseUri = 'https://nft-game-2.vercel.app/api/';
 // }
 
-// const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
-// const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
+const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
+const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
 
-const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
-const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
+// const AUTH_API_URL = `https://nft-game-2.vercel.app/api/auth`;
+// const GAME_API_URL = `https://nft-game-2.vercel.app/api/game`;
 
 export var SIGNER;
 
@@ -24,6 +24,7 @@ const elAuthAs = document.getElementById('auth-as');
 // const elTest = document.getElementById('test');
 const elGame = document.getElementById('game');
 // console.log(window.ethereum);
+const elAbout = document.getElementById('about');
 
 export const handleApiPost = async (endpoint, params) => {
   const result = await axios.post(`${AUTH_API_URL}/${endpoint}`, params, {
@@ -101,6 +102,7 @@ const handleAuth = async () => {
   const { user } = await verifyMessage(message, signature, 'evm');
 
   //renderUser(user);
+  elAbout.style.display = 'none';
   renderGame(user);
 };
 
@@ -114,9 +116,10 @@ const renderGame = (user) => {
   // localStorage.setItem('sessionToken', user.authData.moralis)
   // console.log(user.authData.moralis['address']);
   if (user) {
-    elAuthAs.innerHTML = `Authenticated as ${user.authData.moralis['address']}`;
+    // elAuthAs.innerHTML = `Authenticated as ${user.authData.moralis['address']}`;
+    elAuthAs.innerHTML = `Авторизован как ${user.authData.moralis['address']}`;
   } else {
-    elAuthAs.innerHTML = 'You are not authenticated';
+    elAuthAs.innerHTML = 'Вы не авторизованы';
   }
   startGame(user);
 }
@@ -135,6 +138,7 @@ function init() {
   });
 
   elBtnAnonym.addEventListener('click', async () => {
+    elAbout.style.display = 'none';
     renderGame(null);
   })
 

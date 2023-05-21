@@ -29,10 +29,14 @@ const getPlayerUrl = (address) => {
 }
 
 const DEFAULT_PLAYER_URL = "assets/alienBeige_stand.png";
-const START_GAME_TEXT = 'Start game';
-const GAME_OVER_TEXT = 'Game over';
-const REGAME_TEXT = 'Restart game';
-const BUY_LIFE_TEXT = 'Buy one life and continue run';
+const START_GAME_TEXT_ENG = 'Start game';
+const GAME_OVER_TEXT_ENG = 'Game over';
+const REGAME_TEXT_ENG = 'Restart game';
+const BUY_LIFE_TEXT_ENG = 'Buy one life and continue run';
+const START_GAME_TEXT = 'Начать игру';
+const GAME_OVER_TEXT = 'Игра окончена';
+const REGAME_TEXT = 'Начать игру заново';
+const BUY_LIFE_TEXT = 'Купить одну жизнь и продолжить игру';
 const BASE_SPEED = -5;
 const MAX_SPEED = -15;
 const LIFE_COST = ethers.utils.parseEther('0.001');
@@ -95,6 +99,8 @@ var canCactusGo;
 
 var buyLifeElement;
 
+var bought;
+
 async function initPlayerUrl() {
     if (!authenticatedUser) {
         playerUrl = DEFAULT_PLAYER_URL;
@@ -116,7 +122,8 @@ async function initPlayerUrl() {
             baseLifesCount = result.lifesCount;
         } else {
             playerUrl = DEFAULT_PLAYER_URL;
-            highScore = localStorage.getItem('high-score') == null ? 0 : localStorage.getItem('high-score');
+            highScore = 0;
+            // highScore = localStorage.getItem('high-score') == null ? 0 : localStorage.getItem('high-score');
             baseLifesCount = DEFAULT_LIFES_COUNT;
             rank = -1;
         }
@@ -180,7 +187,10 @@ async function create() {
     let init, dinit;
 
     cactuses = this.physics.add.staticGroup();
-    cactuses.create(Math.random() * 300 + 100 + GAME_CONFIG.width, 532, 'cactus').setScale(0.7).refreshBody();
+    cactuses.create(Math.random() * 300 + 100 + GAME_CONFIG.width, 532, 'cactus')
+        .setScale(0.7)
+        .refreshBody();
+
     for (let c in cactuses.getChildren()) {
         cactuses.getChildren()[c].body.x += 10;
         cactuses.getChildren()[c].body.y += 10;
@@ -192,7 +202,9 @@ async function create() {
     init = 21;
     dinit = init * 2;
     for (let i = init; i < GAME_CONFIG.width + dinit; i += dinit) {
-        platforms.create(i, 579, 'ground').setScale(0.67).refreshBody();
+        platforms.create(i, 579, 'ground')
+            .setScale(0.67)
+            .refreshBody();
     }
 
     lifesCount = baseLifesCount;
@@ -206,9 +218,13 @@ async function create() {
     }
 
     flies = this.physics.add.staticGroup();
-    flies.create(Math.random() * 300 + 100 + GAME_CONFIG.width, 512, 'fly1').setScale(0.7).refreshBody();
+    flies.create(Math.random() * 300 + 100 + GAME_CONFIG.width, 512, 'fly1')
+        .setScale(0.7)
+        .refreshBody();
 
-    player = this.physics.add.sprite(50, 400, 'player').setScale(0.7).refreshBody();
+    player = this.physics.add.sprite(50, 400, 'player')
+        .setScale(0.7)
+        .refreshBody();
 
     this.physics.add.collider(player, platforms);
     this.physics.add.collider(player, cactuses, collisionHandler);
@@ -218,9 +234,9 @@ async function create() {
 
     currentSpeed = BASE_SPEED;
 
-    scoreText = this.add.text(16, actualYScore, 'Score: 0', { fontSize: '32px', fill: '#FFF' });
+    scoreText = this.add.text(16, actualYScore, 'Счет: 0', { fontSize: '32px', fill: '#FFF' });
 
-    highScoreText = this.add.text(416, actualYScore, 'High Score: ' + highScore, { fontSize: '32px', fill: '#FFF' });
+    highScoreText = this.add.text(416, actualYScore, 'Лучший счет: ' + highScore, { fontSize: '32px', fill: '#FFF' });
 
     canFlyGo = false;
     canCactusGo = true;
@@ -284,7 +300,7 @@ async function update() {
             } else {
                 localStorage.setItem('high-score', highScore);
             }
-            highScoreText.setText('High Score: ' + highScore);
+            highScoreText.setText('Лучший счет: ' + highScore);
 
         }
         // if (gameOverElement) {
@@ -326,18 +342,19 @@ async function update() {
                 .setFontStyle('bold')
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', async function () {
-                    gameOver = false;
+                    // gameOver = false;
                     const contract = await new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, SIGNER);
                     const buyResult = await contract.buyOneLife({ value: LIFE_COST });
                     if (buyResult) {
                         console.log(buyResult);
-                        regameElement.setVisible(false);
-                        gameOverElement.setVisible(false);
-                        buyLifeElement.setVisible(false);
+                        bought = true;
+                        // regameElement.setVisible(false);
+                        // gameOverElement.setVisible(false);
+                        // buyLifeElement.setVisible(false);
                         lifes.getChildren()[0].setVisible(true);
                         lifesCount = 1;
                         gameOver = false;
-                        return;
+                        // return;
                     } else {
                         alert('Покупка жизни не удалась. Придется перезапустить игру :(')
                         score = 0;
@@ -347,12 +364,20 @@ async function update() {
             // }
         }
     } else {
+
+        if (bought) {
+            bought = false;
+            regameElement.setVisible(false);
+            gameOverElement.setVisible(false);
+            buyLifeElement.setVisible(false);
+        }
+
         time--;
         if (time == 0) {
             score++;
             time = SCORE_PERIOD;
 
-            scoreText.setText('Score: ' + score);
+            scoreText.setText('Счет: ' + score);
         }
         if (currentSpeed < MAX_SPEED) {
             currentSpeed = MAX_SPEED;

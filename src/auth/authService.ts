@@ -123,7 +123,7 @@ export async function verifyMessage({ network, signature, message }: VerifyMessa
 
   // Update user moralisProfile column
   await serverRequest.put({
-    endpoint: `/users/${user.objectId}`,
+    endpoint: `users/${user.objectId}`,
     params: {
       moralisProfileId: storedProfileId,
     },
@@ -132,7 +132,7 @@ export async function verifyMessage({ network, signature, message }: VerifyMessa
 
   // Get authenticated user
   const updatedUser = await serverRequest.get({
-    endpoint: `/users/${user.objectId}`,
+    endpoint: `users/${user.objectId}`,
     useMasterKey: true,
   });
 

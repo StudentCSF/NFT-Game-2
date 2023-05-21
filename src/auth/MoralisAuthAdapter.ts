@@ -12,7 +12,6 @@ function validateAuthData(authData: any) {
   })
     .then((result) => {
       const data = result.toJSON();
-
       if (id === data.profileId && authId === data.id) {
         if (authData.chainId) {
           authData.chainId = result.result.chain.decimal;
