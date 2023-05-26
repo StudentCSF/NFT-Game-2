@@ -22,35 +22,32 @@ const GAME_CONFIG = {
     }
 };
 
-const getPlayerUrl = (address) => {
-    handleGameApiPost('playerUrl', {
-        address
-    });
-}
-
 const DEFAULT_PLAYER_URL = "assets/alienBeige_stand.png";
-const START_GAME_TEXT_ENG = 'Start game';
-const GAME_OVER_TEXT_ENG = 'Game over';
-const REGAME_TEXT_ENG = 'Restart game';
-const BUY_LIFE_TEXT_ENG = 'Buy one life and continue run';
+
 const START_GAME_TEXT = 'Начать игру';
 const GAME_OVER_TEXT = 'Игра окончена';
 const REGAME_TEXT = 'Начать игру заново';
 const BUY_LIFE_TEXT = 'Купить одну жизнь и продолжить игру';
+
 const BASE_SPEED = -5;
 const MAX_SPEED = -15;
-const LIFE_COST = ethers.utils.parseEther('0.001');
 const JUMP_HEIGHT = -400;
 const ACCELERATION = -0.1;
+
 const SCORE_PERIOD = 30;
+
 const FLIES_START_APPEREANCE_SCORE = 10;
+
 const DEFAULT_LIFES_COUNT = 1;
+
 const LOCAL_Y_SCORE = 10;
 const DEPLOY_Y_SCORE = LOCAL_Y_SCORE - 200;
 const LOCAL_OFFSET = 0;
 const DEPLOY_OFFSET = -100;
 const LOCAL_Y_GO = 300;
 const DEPLOY_Y_GO = LOCAL_Y_GO - 200;
+
+const LIFE_COST = ethers.utils.parseEther('0.001');
 
 var authenticatedUser;
 
@@ -101,6 +98,8 @@ var buyLifeElement;
 
 var bought;
 
+var canUpdateHighScore = true;
+
 async function initPlayerUrl() {
     if (!authenticatedUser) {
         playerUrl = DEFAULT_PLAYER_URL;
@@ -123,7 +122,6 @@ async function initPlayerUrl() {
         } else {
             playerUrl = DEFAULT_PLAYER_URL;
             highScore = 0;
-            // highScore = localStorage.getItem('high-score') == null ? 0 : localStorage.getItem('high-score');
             baseLifesCount = DEFAULT_LIFES_COUNT;
             rank = -1;
         }
@@ -247,20 +245,30 @@ async function create() {
 }
 
 async function reward() {
-    const result = await handleGameApiPost('reward', { score });
+    const result = await handleGameApiPost('reward', {
+        address: authenticatedUser.authData.moralis['address'],
+        score: score
+    });
+    console.log(result);
     if (result && result.rewardUrl) {
         const contract = await new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, SIGNER);
-        console.log('run mint');
-        const mintResult = await contract.mintItem(result.rewardUrl);
-        console.log('end mint');
+        let mintResult;
+        try {
+            mintResult = await contract.mintItem(result.rewardUrl);
+        } catch (e) {
+            mintResult = false;
+            canUpdateHighScore = false;
+        }
         console.log(mintResult);
         if (mintResult) {
             alert("Вы выиграли новый NFT!\nОн скоро проинициализируется.\nДля его использования нужно будет просто перезагрузить страницу.\nНе переживайте, если у Вас будет старый NFT в игре.\nЗначит надо просто подольше подождать.\nПожалуйста, проявите терпение :)");
+            return 1;
         } else {
-            console.log('mint error');
+            return null;
         }
     } else {
         console.log('no result');
+        return null;
     }
 }
 
@@ -282,7 +290,6 @@ function collisionHandler() {
 }
 
 async function update() {
-    // console.log(`${initStart} - ${gameOver} - ${player}`);
     if (initStart || gameOver || !player) {
         return;
     }
@@ -290,7 +297,16 @@ async function update() {
     gameOver = lifesCount == 0;
     console.log(gameOver);
     if (gameOver) {
-        if (highScore == null || score > highScore) {
+        gameOverElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset - 100, GAME_OVER_TEXT, { fontSize: '48px', fill: '#000' })
+            .setOrigin(0.5)
+            .setPadding(10);
+
+        if (authenticatedUser) {
+            await reward();
+            await initPlayerUrl();
+        }
+
+        if (canUpdateHighScore && (highScore == null || score > highScore)) {
             highScore = score;
             if (authenticatedUser) {
                 isNewHighScore = await handleGameApiPost('/score', {
@@ -301,23 +317,9 @@ async function update() {
                 localStorage.setItem('high-score', highScore);
             }
             highScoreText.setText('Лучший счет: ' + highScore);
+        }
+        canUpdateHighScore = true;
 
-        }
-        // if (gameOverElement) {
-        //     gameOverElement.setVisible(true);
-        // } else {
-        gameOverElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset - 100, GAME_OVER_TEXT, { fontSize: '48px', fill: '#000' })
-            .setOrigin(0.5)
-            .setPadding(10);
-        // }
-        if (authenticatedUser && isNewHighScore) {
-            await reward();
-            await initPlayerUrl();
-        }
-        // if (regameElement) {
-        //     console.log(regameElement)
-        //     regameElement.visible = true;
-        // } else {
         regameElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset + 100, REGAME_TEXT, { fontSize: '48px', fill: '#F00' })
             .setOrigin(0.5)
             .setPadding(10)
@@ -326,45 +328,33 @@ async function update() {
             .on('pointerdown', function () {
                 score = 0;
                 gameOver = false;
-                // regameElement.setVisible(false);
-                // lifesCount = 10;
-                // return;
                 this.scene.restart();
             }, this);
-        // }
+            
         if (authenticatedUser) {
-            // if (buyLifeElement) {
-            //     buyLifeElement.setVisible(true);
-            // } else {
             buyLifeElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset, BUY_LIFE_TEXT, { fontSize: '36px', fill: '#F00' })
                 .setOrigin(0.5)
                 .setPadding(10)
                 .setFontStyle('bold')
                 .setInteractive({ useHandCursor: true })
                 .on('pointerdown', async function () {
-                    // gameOver = false;
                     const contract = await new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, SIGNER);
                     const buyResult = await contract.buyOneLife({ value: LIFE_COST });
                     if (buyResult) {
                         console.log(buyResult);
                         bought = true;
-                        // regameElement.setVisible(false);
-                        // gameOverElement.setVisible(false);
-                        // buyLifeElement.setVisible(false);
                         lifes.getChildren()[0].setVisible(true);
                         lifesCount = 1;
                         gameOver = false;
-                        // return;
                     } else {
                         alert('Покупка жизни не удалась. Придется перезапустить игру :(')
                         score = 0;
                         this.scene.restart();
                     }
                 }, this);
-            // }
         }
-    } else {
 
+    } else {
         if (bought) {
             bought = false;
             regameElement.setVisible(false);

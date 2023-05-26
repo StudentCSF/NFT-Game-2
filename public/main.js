@@ -1,13 +1,5 @@
 import { startGame } from "./game.js";
 
-/* global axios ethers */
-// var baseUri;
-// if (window.location.host == '127.0.0.1:5500') {
-//   const baseUri = 'http://127.0.0.1:1337/api/';
-// } else {
-//   const baseUri = 'https://nft-game-2.vercel.app/api/';
-// }
-
 const AUTH_API_URL = `http://127.0.0.1:1337/api/auth`;
 const GAME_API_URL = `http://127.0.0.1:1337/api/game`;
 
@@ -21,9 +13,7 @@ const elUser = document.getElementById('user');
 const elBtnMetamask = document.getElementById('auth-metamask');
 const elBtnAnonym = document.getElementById('anonym');
 const elAuthAs = document.getElementById('auth-as');
-// const elTest = document.getElementById('test');
 const elGame = document.getElementById('game');
-// console.log(window.ethereum);
 const elAbout = document.getElementById('about');
 
 export const handleApiPost = async (endpoint, params) => {
@@ -36,25 +26,14 @@ export const handleApiPost = async (endpoint, params) => {
   return result.data;
 };
 
-// let response = await axios.get('https://ipfs.moralis.io:2053/ipfs/QmRVLthFLhsBeZUvfAhYSGGZ7wMP4dwPCjFYbFQgJ2dtvm/moralis/logo.json');
-// let data = response.data;
-
 export const handleGameApiPost = async (endpoint, params) => {
   const result = await axios.post(`${GAME_API_URL}/${endpoint}`, params, {
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  // if (endpoint == 'reward') {
-  //   console.log(result.data);
-  // }
   return result.data;
 };
-
-// const test = () =>
-//   handleGameApiPost(
-//     'test', {}
-//   );
 
 const requestMessage = (account, networkType, chain) =>
   handleApiPost('request-message', {
@@ -101,32 +80,18 @@ const handleAuth = async () => {
 
   const { user } = await verifyMessage(message, signature, 'evm');
 
-  //renderUser(user);
   elAbout.style.display = 'none';
   renderGame(user);
 };
 
-// const handleTest = async () => {
-//   const { res } = await test();
-//   console.log(res);
-// }
-
 const renderGame = (user) => {
-  // console.log(user);
-  // localStorage.setItem('sessionToken', user.authData.moralis)
-  // console.log(user.authData.moralis['address']);
   if (user) {
-    // elAuthAs.innerHTML = `Authenticated as ${user.authData.moralis['address']}`;
     elAuthAs.innerHTML = `Авторизован как ${user.authData.moralis['address']}`;
   } else {
     elAuthAs.innerHTML = 'Вы не авторизованы';
   }
   startGame(user);
 }
-
-// const renderUser = (user) => {
-//   elUser.innerHTML = user ? JSON.stringify(user, null, 2) : '';
-// };
 
 const renderError = (error) => {
   elError.innerHTML = error ? JSON.stringify(error.message, null, 2) : '';
@@ -141,13 +106,6 @@ function init() {
     elAbout.style.display = 'none';
     renderGame(null);
   })
-
-  // renderGame();
-
-  // elTest.addEventListener('click', async () => {
-  //   handleTest().catch((error) => renderError(error));
-  // });
-
 }
 
 window.addEventListener('load', () => {

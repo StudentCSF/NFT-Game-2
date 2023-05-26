@@ -6,4 +6,3 @@ export const gameRouter = express.Router();
 gameRouter.route('/reward').post(reward);
 gameRouter.route('/playerUrl').post(getPlayerData);
 gameRouter.route('/score').post(setPlayerHighScore);
-// gameRouter.route('/test').post(ipfs)

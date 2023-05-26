@@ -58,6 +58,7 @@ export async function getHighScore(address: string) {
     const exists = await collection.findOne({
         address: address
     });
+    client.close();
     if (exists) {
         return exists.highScore
     } else {

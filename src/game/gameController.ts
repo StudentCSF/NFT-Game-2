@@ -4,9 +4,9 @@ import { NextFunction, Request, Response } from 'express';
 
 export async function reward(req: Request, res: Response, next: NextFunction) {
   try {
-    const { score } = req.body;
+    const { address, score } = req.body;
 
-    let rewardUrl = await rewardHandler(score);
+    let rewardUrl = await rewardHandler(address, score);
 
     res.status(200).json({ rewardUrl });
   } catch (err) {
@@ -37,12 +37,3 @@ export async function setPlayerHighScore(req: Request, res: Response, next: Next
     next(err);
   }
 }
-
-// export async function ipfs(req: Request, res: Response, next: NextFunction) {
-//   try {
-//     const message = await testIPFS();
-//     res.status(200).json({ message });
-//   } catch (err) {
-//     next(err);
-//   }
-// }
