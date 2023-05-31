@@ -4,9 +4,9 @@ import { NextFunction, Request, Response } from 'express';
 
 export async function reward(req: Request, res: Response, next: NextFunction) {
   try {
-    const { address, score } = req.body;
+    const { address, rank, score } = req.body;
 
-    let rewardUrl = await rewardHandler(address, score);
+    let rewardUrl = await rewardHandler(address, rank, score);
 
     res.status(200).json({ rewardUrl });
   } catch (err) {

@@ -14,9 +14,9 @@ export interface RequestMessage {
   network: string;
 }
 
-const DOMAIN = 'defi.finance';
+const DOMAIN = '127.0.0.1:5500';
 const STATEMENT = 'Please sign this message to confirm your identity.';
-const URI = 'https://defi.finance';
+const URI = 'https://127.0.0.1:5500';
 const EXPIRATION_SESSION_HOURS_TIME = 24;
 const TIMEOUT = 15;
 
@@ -86,7 +86,6 @@ export async function verifyMessage({ network, signature, message }: VerifyMessa
     network,
   };
 
-  // Authenticate
   const user = await serverRequest.post<ParseUser>({
     endpoint: `/users`,
     params: {
@@ -97,7 +96,6 @@ export async function verifyMessage({ network, signature, message }: VerifyMessa
     useMasterKey: true,
   });
 
-  // Update user moralisProfile column
   await serverRequest.put({
     endpoint: `users/${user.objectId}`,
     params: {
@@ -106,7 +104,6 @@ export async function verifyMessage({ network, signature, message }: VerifyMessa
     useMasterKey: true,
   });
 
-  // Get authenticated user
   const updatedUser = await serverRequest.get({
     endpoint: `users/${user.objectId}`,
     useMasterKey: true,

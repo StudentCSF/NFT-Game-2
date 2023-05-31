@@ -79,9 +79,7 @@ const handleAuth = async () => {
   const signature = await signer.signMessage(message);
 
   const { user } = await verifyMessage(message, signature, 'evm');
-
-  elAbout.style.display = 'none';
-  renderGame(user);
+  return user;
 };
 
 const renderGame = (user) => {
@@ -99,7 +97,9 @@ const renderError = (error) => {
 
 function init() {
   elBtnMetamask.addEventListener('click', async () => {
-    handleAuth().catch((error) => renderError(error));
+    const user = await handleAuth().catch((error) => renderError(error));
+    elAbout.style.display = 'none';
+    renderGame(user);
   });
 
   elBtnAnonym.addEventListener('click', async () => {

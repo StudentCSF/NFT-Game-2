@@ -11,7 +11,7 @@ const GAME_CONFIG = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 1000, x: 1e-12 },
+            gravity: { y: 1000, x: 0 },
             debug: false
         }
     },
@@ -100,30 +100,29 @@ var bought;
 
 var canUpdateHighScore = true;
 
-async function initPlayerUrl() {
+async function initPlayer() {
     if (!authenticatedUser) {
         playerUrl = DEFAULT_PLAYER_URL;
         highScore = localStorage.getItem('high-score') == null ? 0 : localStorage.getItem('high-score');
         baseLifesCount = DEFAULT_LIFES_COUNT;
         rank = -1;
     } else {
-        let userAddress = authenticatedUser.authData.moralis['address'];
-        let result = await handleGameApiPost('playerUrl', {
+        const userAddress = authenticatedUser.authData.moralis['address'];
+        const playerData = await handleGameApiPost('playerUrl', {
             address: userAddress
         });
-        console.log(result);
-        if (result) {
+        if (playerData) {
             console.log('e result');
-            console.log(result.highScore);
-            playerUrl = result.playerUrl;
-            rank = result.rank;
-            highScore = result.highScore;
-            baseLifesCount = result.lifesCount;
+            console.log(playerData.highScore);
+            playerUrl = playerData.playerUrl;
+            rank = playerData.rank;
+            highScore = playerData.highScore;
+            baseLifesCount = playerData.lifesCount;
         } else {
             playerUrl = DEFAULT_PLAYER_URL;
             highScore = 0;
             baseLifesCount = DEFAULT_LIFES_COUNT;
-            rank = -1;
+            rank = 'none';
         }
     }
 }
@@ -142,20 +141,20 @@ function initVars() {
 
 initVars();
 
+const REMOVE_CANVAS = true;
 
 export async function startGame(authUser) {
     let wasUser = authenticatedUser;
     authenticatedUser = authUser;
-    await initPlayerUrl();
+    await initPlayer();
     if ((!wasUser && authUser || wasUser && !authUser) && game) {
-        game.destroy(true, false);
+        game.destroy(REMOVE_CANVAS);
         game = null;
-        initStart = true;
     }
     if (!game) {
         game = new Phaser.Game(GAME_CONFIG);
-        initStart = true;
     }
+    initStart = true;
 }
 
 async function preload() {
@@ -171,7 +170,11 @@ async function preload() {
 async function create() {
     this.add.image(400, 300, 'background');
     if (initStart) {
-        startGameElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset, START_GAME_TEXT, { fontSize: '48px', fill: '#F00' })
+        startGameElement = this.add.text(
+            this.cameras.main.centerX,
+            this.cameras.main.centerY + actualOffset,
+            START_GAME_TEXT,
+            { fontSize: '48px', fill: '#F00' })
             .setOrigin(0.5)
             .setPadding(10)
             .setFontStyle('bold')
@@ -245,16 +248,17 @@ async function create() {
 }
 
 async function reward() {
-    const result = await handleGameApiPost('reward', {
+    const rewardData = await handleGameApiPost('reward', {
         address: authenticatedUser.authData.moralis['address'],
+        rank: rank,
         score: score
     });
-    console.log(result);
-    if (result && result.rewardUrl) {
+    console.log(rewardData);
+    if (rewardData && rewardData.rewardUrl) {
         const contract = await new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, SIGNER);
         let mintResult;
         try {
-            mintResult = await contract.mintItem(result.rewardUrl);
+            mintResult = await contract.mintItem(rewardData.rewardUrl);
         } catch (e) {
             mintResult = false;
             canUpdateHighScore = false;
@@ -295,15 +299,17 @@ async function update() {
     }
     let isNewHighScore = false;
     gameOver = lifesCount == 0;
-    console.log(gameOver);
     if (gameOver) {
-        gameOverElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset - 100, GAME_OVER_TEXT, { fontSize: '48px', fill: '#000' })
+        gameOverElement = this.add.text(this.cameras.main.centerX,
+            this.cameras.main.centerY + actualOffset - 100,
+            GAME_OVER_TEXT,
+            { fontSize: '48px', fill: '#000' })
             .setOrigin(0.5)
             .setPadding(10);
 
         if (authenticatedUser) {
             await reward();
-            await initPlayerUrl();
+            await initPlayer();
         }
 
         if (canUpdateHighScore && (highScore == null || score > highScore)) {
@@ -320,7 +326,10 @@ async function update() {
         }
         canUpdateHighScore = true;
 
-        regameElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset + 100, REGAME_TEXT, { fontSize: '48px', fill: '#F00' })
+        regameElement = this.add.text(this.cameras.main.centerX,
+            this.cameras.main.centerY + actualOffset + 100,
+            REGAME_TEXT,
+            { fontSize: '48px', fill: '#F00' })
             .setOrigin(0.5)
             .setPadding(10)
             .setFontStyle('bold')
@@ -330,9 +339,12 @@ async function update() {
                 gameOver = false;
                 this.scene.restart();
             }, this);
-            
+
         if (authenticatedUser) {
-            buyLifeElement = this.add.text(this.cameras.main.centerX, this.cameras.main.centerY + actualOffset, BUY_LIFE_TEXT, { fontSize: '36px', fill: '#F00' })
+            buyLifeElement = this.add.text(this.cameras.main.centerX,
+                this.cameras.main.centerY + actualOffset,
+                BUY_LIFE_TEXT,
+                { fontSize: '36px', fill: '#F00' })
                 .setOrigin(0.5)
                 .setPadding(10)
                 .setFontStyle('bold')

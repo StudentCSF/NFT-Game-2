@@ -1,6 +1,7 @@
 import Moralis from 'moralis';
 import { findOneByRarity as findOneByRarity, setHighScore, getHighScore } from "./gameRepository"
 import axios from 'axios'
+import { UploadFolderRequest } from '@moralisweb3/common-evm-utils';
 
 const CHAIN_ID = '80001';
 
@@ -26,6 +27,8 @@ const RARITY_SCORE_MAP: Map<string, number> = new Map([
     ['legendary', 5000]
 ]);
 
+const NFT_COLLECTION_NAME: string = 'Dino chrome NFT game 2';
+
 async function getDataFromUrl(url: string) {
     let response = await axios.get(url);
     let data = response.data;
@@ -43,39 +46,35 @@ export async function findPlayerUrl(address: string) {
     console.log(nfts.result);
 
     let playerUrl = null;
-    let imU = null;
-    let maxk = 0;
+    let imageUrl = null;
+    let maxScore = 0;
     let lifesCount = 1;
     let rank = null;
-    let tad;
+    let nftMetadata;
     for (let i in nfts.result) {
-        if (nfts.result[i].name != 'Dino chrome NFT game 2') {
+        if (nfts.result[i].name != NFT_COLLECTION_NAME) {
             continue;
         }
         let uri = nfts.result[i].tokenUri;
         console.log(uri);
         if (uri) {
-            tad = await getDataFromUrl(uri);
-            console.log(`tad:  ${tad}\n`);
+            nftMetadata = await getDataFromUrl(uri);
+            console.log(`tad:  ${nftMetadata}\n`);
         }
-        if (!tad || !tad.rarity) {
+        if (!nftMetadata || !nftMetadata.rarity) {
             continue;
         }
-        let mtd = tad;
-        if (!mtd) {
-            return null;
-        }
-        console.log(tad);
-        let scoreValue = RARITY_SCORE_MAP.get(tad.rarity.toLowerCase());
+        console.log(nftMetadata);
+        let scoreValue = RARITY_SCORE_MAP.get(nftMetadata.rarity.toLowerCase());
         if (scoreValue) {
-            if (scoreValue > maxk && tad.image) {
-                maxk = scoreValue;
-                rank = tad.rarity;
-                imU = tad.image;
-                lifesCount = tad.lifesCount;
+            if (scoreValue > maxScore && nftMetadata.image) {
+                maxScore = scoreValue;
+                rank = nftMetadata.rarity;
+                imageUrl = nftMetadata.image;
+                lifesCount = nftMetadata.lifesCount;
             }
         }
-        playerUrl = imU;
+        playerUrl = imageUrl;
     }
     console.log(123);
     let highScore = await getHighScore(address);
@@ -97,20 +96,27 @@ export async function findPlayerUrl(address: string) {
     return null;
 }
 
-export async function rewardHandler(address: string, score: number) {
+export async function rewardHandler(address: string, rank: string, score: number) {
     const highScore = await getHighScore(address);
     if (highScore > score) {
         return null;
     }
-
+    console.log(rank)
     console.log(score);
-    let rew = 0;
+    const rewScorePrev = RARITY_SCORE_MAP.get(rank);
+    if (!rewScorePrev) {
+        return null;
+    }
+    let rewScoreCurr = rewScorePrev;
     for (let [key, value] of SCORE_RARITY_MAP) {
-        if (score >= key && key > rew) {
-            rew = key;
+        if (score >= key && key > rewScoreCurr) {
+            rewScoreCurr = key;
         }
     }
-    let rewRar = SCORE_RARITY_MAP.get(rew);
+    if (rewScoreCurr <= rewScorePrev) {
+        return null;
+    }
+    let rewRar = SCORE_RARITY_MAP.get(rewScoreCurr);
     if (!rewRar) {
         console.log(111);
         return null;
@@ -127,29 +133,30 @@ export async function rewardHandler(address: string, score: number) {
             score: score,
             rewRar: rewRar
         }
-        let res = await buildMetadata(rewParams);
-        console.log(`res ${res}`);
-        if (res) {
-            return res;
+        let url = await uploadMetadata(rewParams);
+        console.log(`res ${url}`);
+        if (url) {
+            return url;
         } else {
             console.log(666);
             return null;
         }
     }
+    return null;
 }
 
-async function buildMetadata(request: any) {
-    const result = await findOneByRarity(request.rewRar);
-    console.log(result);
-    if (result) {
+async function uploadMetadata(request: any) {
+    const baseMetadata = await findOneByRarity(request.rewRar);
+    console.log(baseMetadata);
+    if (baseMetadata) {
         const received = new Date().toISOString();
-        const description = `Dino NFT Game 2 ${result.rarity} game character.\nIt has ${result.lifesCount} lifes.\nReceived: ${received}.`;
+        const description = `Dino NFT Game 2 ${baseMetadata.rarity} game character.\nIt has ${baseMetadata.lifesCount} lifes.\nReceived: ${received}.`;
         let metadata = {
-            name: result.name,
+            name: baseMetadata.name,
             description: description,
-            image: result.imageUrl,
-            rarity: result.rarity,
-            lifesCount: result.lifesCount,
+            image: baseMetadata.imageUrl,
+            rarity: baseMetadata.rarity,
+            lifesCount: baseMetadata.lifesCount,
             received: received
         };
 
